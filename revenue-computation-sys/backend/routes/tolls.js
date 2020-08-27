@@ -46,7 +46,7 @@ router.route('/update/:id').post((req, res) => {
       toll.date = Date.parse(req.body.date);
 
       toll.save()
-        .then.catch(err => res.status(400).json('Error: ' + err));
+      .then.catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
