@@ -1,104 +1,69 @@
-firebase.auth().onAuthStateChanged(function(user)
-{
-  if (user) {
-    // User is signed in.
+$(document).ready(function () {
+    var counter = 0;
 
-    document.getElementById("user_div").style.display = "block";
-    document.getElementById("login_div").style.display = "none";
+    $("#addrow").on("click", function () {
+        var newRow = $("<tr>");
+        var cols = "";
 
-    var user = firebase.auth().currentUser;
+        cols += '<td><input type="text" class="form-control" name="plate' + counter + '"/></td>';
+        cols += '<td><input type="text" class="form-control" name="type' + counter + '"/></td>';
+        cols += '<td><input type="text" class="form-control" name="tax' + counter + '"/></td>';
+        newRow.append(cols);
+        $("table.order-list").append(newRow);
+        counter++;
+    });
 
-    if(user != null){
 
-      var email_id = user.email;
-      var email_verified = user.emailVerified;
 
-      if(email_verified)
-      {
-        document.getElementById("verify_btn").style.display ="none";
-          setTimeout(function()
-        {
-          console.log("redirect");
-          window.location.href = "dashboard/index.html";
-        }, 2000); 
-      }
-      else
-      {
-        document.getElementById("verify_btn").style.display ="block"
-      }
+    $("table.order-list").on("click", ".ibtnDel", function (event) {
+        $(this).closest("tr").remove();       
+        counter -= 1
+    });
 
-      document.getElementById("user_para").innerHTML = "Welcome User : " + email_id + "<br> Verified: " + email_verified;
-      
-    }
 
-  } else {
-    // No user is signed in.
-
-    document.getElementById("user_div").style.display = "none";
-    document.getElementById("login_div").style.display = "block";
-
-  }
 });
 
 
-
-function login(){
-
-  var userEmail = document.getElementById("email_field").value;
-  var userPass = document.getElementById("password_field").value;
-
-  firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-
-    window.alert("Error : " + errorMessage);
-
-    // ...
-  });
-
-}
-
-function signUp(){
-
-  var userEmail = document.getElementById("email_field").value;
-  var userPass = document.getElementById("password_field").value;
-
-  firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-
-    window.alert("Error : " + errorMessage);
-
-    // ...
-  });
-
-}
-
-function logout(){
-  firebase.auth().signOut();
-}
-
-
-function sendVerification(){
-  var user = firebase.auth().currentUser;
-
- user.sendEmailVerification().then(function() {
-      window.alert("Email verification has been sent to your email address.");
-    }).catch(function(error) {
-      window.alert("Error" + error.message);
-    });
-}
-
-function forgotPassword()
+function writeData()
 {
-  var auth = firebase.auth();
-  var userEmail = document.getElementById("email_field").value;
+    firebase.database().ref("User").push({
+        plate: document.getElementById("plate").value,
+        type: document.getElementById("type").value,
+        tax: document.getElementById("tax").value
+    });
 
-auth.sendPasswordResetEmail(userEmail).then(function() {
-    window.alert("Password reset link is sent to your mail");
-  }).catch(function(error) {
-    window.alert("Error" + error.message);
-  });
+    getData();
+
+}
+
+function getData()
+{
+     firebase.database().ref("/").once('value', function(snapshot)
+     {
+        snapshot.forEach(function(childSnapshot)
+        {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            document.getElementById("data").innerHTML = childData['plate'] + "," + childData['type'] + "," + childData['tax']
+        })
+
+     })
+}
+firebase.auth().onAuthStateChanged(function(user)
+{
+if (user) {
+      var user = firebase.auth().currentUser;
+      var email_id = user.email;
+      document.getElementById("userEmail").innerHTML = email_id;
+
+}});
+
+function signOut(){
+  firebase.auth().signOut();
+  setTimeout(function()
+      {
+        console.log("redirect");
+        window.location.href = "../index.html";
+      }, 1000); 
+      
 }
