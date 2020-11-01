@@ -1,0 +1,56 @@
+<html>
+<head>
+  <title>RCS Login</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="login_div" class="main-div">
+    <h3>Login to RCS Toll System</h3>
+    <input type="email" placeholder="Email..." id="email_field" />
+    <input type="password" placeholder="Password..." id="password_field" />
+
+
+
+    <button onclick="login()">Login to Account</button>
+    <input class="btn-link" value="Forgot Password?" onclick="forgotPassword()" type="button">
+    <button onclick="signUp()">Create an Account</button>
+  </div>
+
+  <div id="user_div" class="loggedin-div">
+    <h3>Welcome to RCS</h3>
+    <p id="user_para">Welcome to RCS login. You're currently logged in.</p>
+    <button onclick="logout()">Logout</button>
+    <button id="verify_btn" onclick="sendVerification()">Send Verification</button>
+  </div>
+  
+
+
+
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCOWs82_cBpQZ4uxT1J6GrwXKEpdPG901A",
+    authDomain: "rc-system-878bb.firebaseapp.com",
+    databaseURL: "https://rc-system-878bb.firebaseio.com",
+    projectId: "rc-system-878bb",
+    storageBucket: "rc-system-878bb.appspot.com",
+    messagingSenderId: "995006424390",
+    appId: "1:995006424390:web:2041096bf2ae409f3af147"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+  <script src="index.js"></script>
+
+</body>
+</html>
