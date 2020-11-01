@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>RCS Records</title>
+
+    <title>RCS Dashboard</title>
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script lang="javascript" src="dist/xlsx.full.min.js"></script>
-    <script lang="javascript" src="dist/FileSaver.min.js"></script>
-
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css" />
+        <script src="utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
     #view-source {
@@ -25,17 +25,20 @@
       margin-right: 40px;
       margin-bottom: 40px;
       z-index: 900;
+      -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     }
     </style>
   </head>
 
-<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
   <body>
 
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
-          <a href="../index.html"><span class="mdl-layout-title">RCS | Dashboard</span></a>
+          <a href="index.html"><span class="mdl-layout-title">RCS | Dashboard</span></a>
           <div class="mdl-layout-spacer"></div>
             <button onclick="signOut()" class="mdl-button mdl-js-button mdl-js-ripple-effect">Log out <span class="material-icons">account_circle</span></button>
 
@@ -54,69 +57,161 @@
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-1500">
           <a class="mdl-navigation__link" href="../records"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">save</i>Records</a>
           <a class="mdl-navigation__link" href="../complaints"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">error</i>Complaints</a>
-          <a class="mdl-navigation__link" href="./computations"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">calculate</i>Computations</a>
+          <a class="mdl-navigation__link" href="../computations"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">calculate</i>Computations</a>
           <div class="mdl-layout-spacer"></div>
           <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="container">
-          <input type="button" class="btn btn-md btn-block mdl-button mdl-js-button mdl-js-ripple-effect" id="button-a" value="Generate Report" />
-          <table id="myTable" class=" table order-list">
-          <thead>
-              <tr>
-                  <td>License Plate</td>
-                  <td>Vehicle Type</td>
-                  <td>Toll tax</td>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-                  <td class="col-sm-4">
-                      <input type="text" name="plate" class="form-control" id="plate"/>
-                  </td>
-                  <td class="col-sm-4">
-                     <input type="text" name="type" class="form-control" id="type"/>
-                  </td>
-                  <td class="col-sm-4">
-                      <input type="number" name="tax" class="form-control" id="tax"/>
-                  </td>
-              </tr>
-          </tbody>
-          <tfoot>
-              <tr>
-                  <td colspan="5" style="text-align: left;">
-                      <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
-                  </td>
-              </tr>
-              <tr>
-              </tr>
-          </tfoot>
-      </table>
-</div>
+
+        <div class="mdl-grid demo-content">
+          <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+                 
+      <div class="container">
+            <h2>Records</h2>
+            <p>This tables displays all the recorded data:</p>            
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>License Plate</th>
+                  <th>Vehicle Type</th>
+                  <th>Tax collected</th>
+                  <th>Tax detected</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="success">
+                  <td>LEC413</td>
+                  <td>VAN</td>
+                  <td>20</td>
+                  <td>20</td>
+                </tr>
+                <tr class="success">
+                  <td >AAC413</td>
+                  <td>CAR</td>
+                  <td>10</td>
+                  <td>10</td>
+                </tr>
+                <tr class="danger">
+                  <td>POL413</td>
+                  <td>TRUCK</td>
+                  <td>50</td>
+                  <td>30</td>
+                </tr>
+                <tr class="danger">
+                  <td>APK111</td>
+                  <td>CAR</td>
+                  <td>30</td>
+                  <td>10</td>
+                </tr>
+                <tr class="danger">
+                  <td>GHK222</td>
+                  <td>VAN</td>
+                  <td>40</td>
+                  <td>20</td>
+                </tr>
+                <tr class="success">
+                  <td>LEC333</td>
+                  <td>VAN</td>
+                  <td>20</td>
+                  <td>20</td>
+                </tr>
+                <tr class="danger">
+                  <td>AAC413</td>
+                  <td>CAR</td>
+                  <td>40</td>
+                  <td>10</td>
+                </tr>
+                <tr class="danger">
+                  <td>ABC123</td>
+                  <td>CAR</td>
+                  <td>20</td>
+                  <td>10</td>
+                </tr>
+                <tr class="danger">
+                  <td>MUD111</td>
+                  <td>VAN</td>
+                  <td>50</td>
+                  <td>20</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+          <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
+            <div style="width:75%;">
+    <canvas id="canvas"></canvas>
+  </div>
+  <script>
+    var config = {
+      type: 'line',
+      data: {
+        labels: ['LEC413(VAN)', 'AAC413(CAR)', 'POL413(TRUCK)', 'APK111(CAR)', 'GHK222(VAN)', 'LEC333(VAN)', 'AAC413(CAR)', 'ABC123(CAR)', 'MUD111(VAN)'],
+        datasets: [{
+          label: 'Tax collected by Cashier',
+          backgroundColor: window.chartColors.red,
+          borderColor: window.chartColors.red,
+          data: [20, 10, 50, 30, 40, 20, 40, 20, 50],
+          fill: false,
+        }, {
+          label: 'Tax Detected by System',
+          fill: false,
+          backgroundColor: window.chartColors.blue,
+          borderColor: window.chartColors.blue,
+          data: [20, 10, 30, 10, 20, 20, 10, 10, 20],
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Detected computations by the system'
+        },
+        scales: {
+          y: {
+            // the data minimum used for determining the ticks is Math.min(dataMin, suggestedMin)
+            suggestedMin: 10,
+
+            // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
+            suggestedMax: 50
+          }
+        }
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('canvas').getContext('2d');
+      window.myLine = new Chart(ctx, config);
+    };
+  </script>
+          </div>
+        
+          </div>
+
+
+
+            <div class="demo-separator mdl-cell--1-col"></div>
+          </div>
+        </div>
       </main>
     </div>
-    <script>
-        var wb = XLSX.utils.table_to_book(document.getElementById('myTable'), {sheet:"Sheet JS"});
-        var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
+        <defs>
+          
+        </defs>
+      </svg>
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 250" style="position: fixed; left: -1000px; height: -1000px;">
+        <defs>
+          
 
-        function s2ab(s) {
 
-                        var buf = new ArrayBuffer(s.length);
-                        var view = new Uint8Array(buf);
-                        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-                        return buf;
-        }
-        $("#button-a").click(function(){
-        saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'report.xlsx');
-        });
 
-</script>
-     
+        </defs>
+      </svg>  
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
      <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
 
 
       <script>
